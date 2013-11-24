@@ -1,0 +1,28 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSymmetric(TreeNode *root) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        
+        return !root ? true: isSymmetricTree(root->left, root->right);
+    }
+    
+    bool isSymmetricTree(TreeNode *t1, TreeNode *t2){
+        if(!t1 && !t2) 
+            return true;
+        else if(!t1 || !t2)
+            return false;
+        else 
+            return (t1->val == t2->val) && isSymmetricTree(t1->left, t2->right) && isSymmetricTree(t1->right, t2->left);
+        
+    }
+};

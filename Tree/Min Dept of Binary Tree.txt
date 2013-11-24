@@ -1,0 +1,45 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int minDepth(TreeNode *root) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        if(!root) return 0;
+        
+        queue<TreeNode *> myqueue;
+        int depth = 0;
+        
+        myqueue.push(root);
+        myqueue.push(NULL);
+        depth++;
+        
+        while(!myqueue.empty())
+        {
+            TreeNode *p = myqueue.front();
+            myqueue.pop();
+            if( !p ) 
+            {//if the popped node is null, it means one level has been traversaled completely 
+            //and all nodes in the next level have been pushed in.
+                myqueue.push(NULL);  
+                depth++;
+            }
+            else if(p->left || p->right)
+            {
+                if(p->left) myqueue.push(p->left);
+                if(p->right) myqueue.push(p->right);
+            }
+            else {
+                return depth;
+            }
+        }
+        
+    }
+};

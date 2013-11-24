@@ -1,0 +1,32 @@
+    bool isSymmetric(TreeNode *root) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        if(!root) return true;
+        
+        queue<TreeNode*> myqueue;
+        
+        myqueue.push(root->left);
+        myqueue.push(root->right);
+        
+        while(!myqueue.empty())
+        {
+            TreeNode *t1 = myqueue.front();
+            myqueue.pop();
+            TreeNode *t2 = myqueue.front();
+            myqueue.pop();
+            
+            if(!t1 && !t2) 
+                continue;
+            else if(!t1 || !t2 || t1->val != t2->val) 
+                return false;
+            else
+            {
+                myqueue.push(t1->left);
+                myqueue.push(t2->right);
+                myqueue.push(t1->right);
+                myqueue.push(t2->left);
+            }
+        }
+        
+        return true;
+    }
