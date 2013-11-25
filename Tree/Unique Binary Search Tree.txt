@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int numTrees(int n) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        vector<int> vec = f(n);
+        
+        return vec.back();
+    }
+    
+    vector<int> f(int n){
+        //the vector maintain an array. 
+        //In which, the index is the length of right-hand tree, from 0 to size-1,
+        //and the value is the number of subtree with the specific length.
+        //The last element is the number of unique trees.
+        vector<int> vec; 
+        
+        if(0 == n) {
+            vec.push_back(0);
+        }
+        else if(1 == n) {
+            vec.push_back(1);
+            vec.push_back(1); //the lase element is the sum of the values
+        }
+        else {
+            vector<int> vec_n_1 = f(n-1);
+            int size = vec_n_1.size();
+            int sum = vec_n_1.back();
+            int new_sum = 0;
+            
+            vec_n_1.pop_back(); //remove the last element which is the sum of the values
+            size = size - 1; 
+            //set the values of the new vector vec.
+            for(int i=0; i<size; i++){
+                if( i < 2) {
+                    vec.push_back(sum);
+                    new_sum += sum;
+                    continue;
+                }
+                sum = sum - vec_n_1[i-2];
+                vec.push_back(sum);
+                new_sum += sum;
+            }
+            vec.push_back(1);
+            new_sum += 1;
+            vec.push_back(new_sum);
+        }
+        
+        return vec;
+    }
+};

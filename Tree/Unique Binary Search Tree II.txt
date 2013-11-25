@@ -1,0 +1,72 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode *> generateTrees(int n) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        vector<TreeNode *> vec_n;
+        if(n == 0) {
+            vec_n.push_back(NULL);
+            return vec_n;
+        }
+        else if(n == 1){
+            vec_n.push_back(new TreeNode(n));
+            return vec_n;
+        }
+        
+        //
+        vector<TreeNode *> vec_n_1 = generateTrees(n-1);
+        
+        for(auto it = vec_n_1.begin(); it != vec_n_1.end(); ++it){
+            TreeNode *root = *it;
+            TreeNode *new_root = copyTree(root);
+            auto ptr = new_root;
+            int depth = 1;
+            
+            while(ptr){
+                TreeNode *new_tree = copyTree(root);
+                TreeNode *p1 = new_tree, *p2;
+                int i = 0;
+                //find the node with the current depth. p1 points the node and p2 points the parent
+                while(i<depth) {
+                    p2 = p1;
+                    p1 = p1->right;
+                    i++;
+                }
+                //insert the new node and the original right sub-tree will become the left sub-tree of the new node
+                TreeNode *new_node = new TreeNode(n);
+                new_node->left = p1;
+                p2->right = new_node;
+                vec_n.push_back(new_tree);
+                //go to the next right node with depth+1
+                depth++;
+                ptr = ptr->right;
+            }
+            
+            TreeNode *new_node = new TreeNode(n);
+            new_node->left = new_root;
+            vec_n.push_back(new_node);
+        }
+        return vec_n;
+    }
+    
+    TreeNode * copyTree(TreeNode *root){
+        if(!root) return NULL;
+        
+        TreeNode *new_root = new TreeNode(root->val);
+        
+        new_root->left = copyTree(root->left);
+        new_root->right = copyTree(root->right);
+        
+        return new_root;
+    }
+};
+
