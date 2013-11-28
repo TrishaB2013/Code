@@ -1,0 +1,32 @@
+        vector<int> myvec;
+        
+        if(NULL == root) return myvec;
+        
+        stack<TreeNode *> mystack;
+        TreeNode * prevNode;
+        
+        mystack.push(root);
+        prevNode  = NULL;
+        
+        while(!mystack.empty()){
+            TreeNode *top = mystack.top();
+            //if the node is the parent of previous popped node, then traverse the parent and pop it out.
+            if(top->right == prevNode || top->left == preNode){
+                myvec.push_back(top->val);
+                mystack.pop();
+                prevNode = top;
+            }
+            //if the top is a leave, pop it and insert the value into vector
+            else if(NULL == top->right && NULL == top->left){
+                mystack.pop();
+                myvec.push_back(top->val);
+                prevNode = top;
+            }
+            else{
+                //push the children in the stack if they exist.
+                if(top->right) mystack.push(top->right);
+                if(top->left) mystack.push(top->left);
+            }
+        }
+            
+        return myvec;

@@ -1,0 +1,32 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode *root) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        vector<int> myvec;
+        
+        if(NULL == root) return myvec;
+        
+        postorderTrav(root, myvec);
+        
+        return myvec;
+    }
+    
+    void postorderTrav(TreeNode *root, vector<int> &vec){
+        
+        if(NULL == root) return;
+        
+        preorderTrav(root->left, vec);
+        preorderTrav(root->right, vec);
+	vec.push_back(root->val);
+    }
+};
