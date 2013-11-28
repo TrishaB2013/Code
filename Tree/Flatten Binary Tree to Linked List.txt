@@ -1,0 +1,63 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void flatten(TreeNode *root) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        if(NULL == root) return;
+        
+        //flatten1(root);
+        TreeNode *tail = NULL;
+        flatten2(root, tail);
+    }
+    //solution 1
+    void flatten1(TreeNode *root){
+        if(NULL == root) return;
+        
+        if(root->left) flatten(root->left);
+        if(root->right) flatten(root->right);
+        
+        if(NULL == root->left) return;
+        TreeNode *rtree = root->right;
+        root->right = root->left;
+        root->left = NULL;  //set the left subtree as NULL!!
+        
+        if(NULL == rtree) return;
+        TreeNode *p;
+        p = root->right;
+        while(p->right) p = p->right;
+        p->right = rtree;
+    }
+    //solution 2
+    void flatten2(TreeNode *root, TreeNode *&tail){
+        if(NULL == root) return;
+        
+        if(NULL == root->left && NULL == root->right) {
+            tail = root;
+            return;
+        }
+        
+        TreeNode *ltail = NULL, *rtail = NULL;
+        if(root->left) flatten2(root->left, ltail);
+        if(root->right) flatten2(root->right, rtail);
+        
+        if(NULL == root->left) {
+            tail = rtail;
+            return;
+        }
+        TreeNode *rtree = root->right;
+        root->right = root->left;
+        root->left = NULL; 
+        ltail->right = rtree;
+        tail = rtail ? rtail : (ltail ? ltail : tail);
+        
+    }
+};

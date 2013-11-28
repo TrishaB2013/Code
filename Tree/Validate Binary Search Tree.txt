@@ -1,0 +1,33 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isValidBST(TreeNode *root) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        if(NULL == root) return true;
+        
+        int min = std::numeric_limits<int>::min();
+        int max = std::numeric_limits<int>::max();
+        
+        return (NULL != root->left ? isBST(root->left, min, root->val) : true) 
+            && (NULL != root->right ? isBST(root->right, root->val, max) : true);
+    }
+    
+    bool isBST(TreeNode *root, int min, int max)
+    {
+        if(NULL == root) return true;
+        
+        return (root->val < max && root->val > min)
+            && (NULL != root->left ? isBST(root->left, min, root->val) : true)
+            && (NULL != root->right ? isBST(root->right, root->val, max) : true);
+        
+    }
+};
